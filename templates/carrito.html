@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Carrito - AZR BOUTIQUE{% endblock %}
+
+{% block content %}
+<h1 style="color: var(--cafe-oscuro); margin-bottom: 2rem;">Tu Carrito de Compras</h1>
+
+{% if carrito.items.all %}
+<div style="background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+    {% for item in carrito.items.all %}
+    <div style="display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee;">
+        {% if item.producto.imagen %}
+        <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre_producto }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 1rem;">
+        {% else %}
+        <img src="/media/productos/default.jpg" alt="{{ item.producto.nombre_producto }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 1rem;">
+        {% endif %}
+        
+        <div style="flex: 1;">
+            <h3 style="margin-bottom: 0.5rem;">{{ item.producto.nombre_producto }}</h3>
+            <p style="color: var(--texto-claro); margin-bottom: 0.5rem;">${{ item.producto.precio }} c/u</p>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <form method="post" action="{% url 'actualizar_carrito' item.id %}" style="display: flex; align-items: center; gap: 0.5rem;">
+                {% csrf_token %}
+                <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" style="width: 60px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem;">Actualizar</button>
+            </form>
+            
+            <p style="font-weight: bold; min-width: 100px; text-align: right;">
+                ${{ item.subtotal }}
+            </p>
+            
+            <a href="{% url 'eliminar_del_carrito' item.id %}" class="btn" style="background: #ff6b6b; color: white; padding: 0.5rem 1rem;">Eliminar</a>
+        </div>
+    </div>
+    {% endfor %}
+    
+    <div style="text-align: right; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--cafe-medio);">
+        <h2 style="color: var(--cafe-oscuro);">Total: ${{ carrito.total_carrito }}</h2>
+        <a href="{% url 'realizar_pedido' %}" class="btn btn-primary" style="margin-top: 1rem; padding: 1rem 2rem; font-size: 1.1rem;">Realizar Pedido</a>
+    </div>
+</div>
+{% else %}
+<div style="text-align: center; padding: 4rem;">
+    <h3 style="color: var(--texto-claro); margin-bottom: 1rem;">Tu carrito está vacío</h3>
+    <p style="color: var(--texto-claro); margin-bottom: 2rem;">Descubre nuestros deliciosos productos</p>
+    <a href="{% url 'productos' %}" class="btn btn-primary">Ver Productos</a>
+</div>
+{% endif %}
+{% endblock %}

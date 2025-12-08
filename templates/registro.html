@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro - AZR BOUTIQUE{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 0 auto;">
+    <h1 style="text-align: center; color: #3E2723; margin-bottom: 2rem;">Crear Cuenta</h1>
+    
+    <form method="post" style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Nombre de usuario:</label>
+            <input type="text" name="username" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="Elige un nombre de usuario">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Nombre:</label>
+            <input type="text" name="first_name" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="Tu nombre">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Apellido:</label>
+            <input type="text" name="last_name" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="Tu apellido">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Correo electrónico:</label>
+            <input type="email" name="email" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="tu@email.com">
+        </div>
+        
+        <div style="margin-bottom: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Contraseña:</label>
+            <input type="password" name="password1" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="Mínimo 8 caracteres">
+            <small style="color: #8D6E63; font-size: 0.8rem;">La contraseña debe tener al menos 8 caracteres.</small>
+        </div>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: #5D4037;">Confirmar contraseña:</label>
+            <input type="password" name="password2" required 
+                   style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;"
+                   placeholder="Repite tu contraseña">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; margin-top: 1rem; font-size: 1.1rem;">
+            Registrarse
+        </button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 1.5rem; color: #5D4037;">
+        ¿Ya tienes cuenta? 
+        <a href="{% url 'login' %}" style="color: #8D6E63; font-weight: bold; text-decoration: none;">
+            Inicia sesión aquí
+        </a>
+    </p>
+</div>
+
+<style>
+    input:focus {
+        outline: none;
+        border-color: var(--rojo-carmesí) !important;
+        box-shadow: 0 0 5px rgba(186, 40, 50, 0.3); /* Usando el rojo carmesí con un toque plateado */
+    }
+    
+    .btn-primary {
+        background: var(--rojo-carmesí); /* Color rojo carmesí */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background: var(--plateado); /* Un tono plateado para el hover */
+    }
+</style>
+
+{% endblock %}

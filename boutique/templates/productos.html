@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Productos - AZR BOUTIQUE{% endblock %}
+
+{% block content %}
+<h1 style="color: #3E2723; margin-bottom: 2rem;">Nuestros Productos</h1>
+
+<div style="margin-bottom: 2rem;">
+    <h3>Filtrar por categoría:</h3>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+        <a href="{% url 'productos' %}" class="btn {% if not request.GET.categoria %}btn-primary{% else %}btn-outline{% endif %}" 
+           style="color: {% if not request.GET.categoria %}white{% else %}#5D4037{% endif %}; border-color: #5D4037;">
+            Todos
+        </a>
+        {% for categoria in categorias %}
+        <a href="{% url 'productos' %}?categoria={{ categoria.id }}" 
+           class="btn {% if request.GET.categoria == categoria.id|stringformat:'i' %}btn-primary{% else %}btn-outline{% endif %}"
+           style="color: {% if request.GET.categoria == categoria.id|stringformat:'i' %}white{% else %}#5D4037{% endif %}; border-color: #5D4037;">
+            {{ categoria.nombre }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="product-grid">
+    {% for producto in productos %}
+    <div class="product-card">
+        {% if producto.imagen %}
+        <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" class="product-image">
+        {% else %}
+        <div style="width: 100%; height: 200px; background: #D7CCC8; display: flex; align-items: center; justify-content: center; color: #5D4037;">
+            <span>✨</span>
+        </div>
+        {% endif %}
+        <div class="product-info">
+            <h3>{{ producto.nombre }}</h3>
+            <p style="color: #757575; font-size: 0.9rem; margin-bottom: 0.5rem;">{{ producto.categoria.nombre }}</p>
+            <p class="product-price">${{ producto.precio }}</p>
+            <p>{{ producto.descripcion|truncatewords:20 }}</p>
+            
+            {% if user.is_authenticated %}
+            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">
+                Agregar al Carrito
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline" style="margin-top: 1rem; width: 100%; color: #5D4037; border-color: #5D4037;">
+                Inicia sesión para comprar
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div style="text-align: center; grid-column: 1 / -1; padding: 3rem;">
+        <h3 style="color: #757575;">No se encontraron productos</h3>
+        <p style="color: #757575;">Vuelve pronto para ver nuestros productos.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

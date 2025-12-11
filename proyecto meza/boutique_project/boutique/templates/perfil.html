@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil - AZR BOUTIQUE{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1 style="color: var(--cafe-oscuro); margin-bottom: 2rem;">Mi Perfil</h1>
+    
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+        <!-- Información del usuario -->
+        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--cafe-medio); margin-bottom: 1rem;">Información Personal</h3>
+            <p><strong>Nombre:</strong> {{ user.nombre }} {{ user.apellido }}</p>
+            <p><strong>Usuario:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% if user.numero_telefonico %}
+            <p><strong>Teléfono:</strong> {{ user.numero_telefonico }}</p>
+            {% endif %}
+            <p><strong>Miembro desde:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+        </div>
+        
+        <!-- Historial de pedidos -->
+        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--cafe-medio); margin-bottom: 1rem;">Mis Pedidos</h3>
+            
+            {% if pedidos %}
+                {% for pedido in pedidos %}
+                <div style="border: 1px solid #eee; border-radius: 5px; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong>Pedido #{{ pedido.pedido_id }}</strong>
+                        <span style="background: 
+                            {% if pedido.estado_pedido == 'entregado' %}#4caf50
+                            {% elif pedido.estado_pedido == 'preparando' %}#ff9800
+                            {% elif pedido.estado_pedido == 'pendiente' %}#2196f3
+                            {% else %}#f44336{% endif %}; 
+                            color: white; padding: 0.25rem 0.5rem; border-radius: 15px; font-size: 0.8rem;">
+                            {{ pedido.get_estado_pedido_display }}
+                        </span>
+                    </div>
+                    <p style="margin-bottom: 0.5rem;"><strong>Fecha:</strong> {{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Total:</strong> ${{ pedido.total }}</p>
+                    <p style="margin-bottom: 0;"><strong>Método de pago:</strong> {{ pedido.get_metodo_de_pago_display }}</p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: var(--texto-claro); padding: 2rem;">
+                    Aún no has realizado ningún pedido.
+                </p>
+                <div style="text-align: center;">
+                    <a href="{% url 'productos' %}" class="btn btn-primary">Realizar mi primer pedido</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
